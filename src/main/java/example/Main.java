@@ -13,7 +13,6 @@ public class Main {
 
     public static void main(String[] args) {
         String file = "./src/test/resources/test-game-field-1.txt";
-        printGameField(readGameField(file));
     }
 
     // TODO: move function
