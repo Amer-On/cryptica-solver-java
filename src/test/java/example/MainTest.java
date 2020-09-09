@@ -32,10 +32,34 @@ public class MainTest {
         char[][] gameField = Main.fillGameField(content);
 
         boolean allLinesSameWidth = Arrays.stream(gameField)
-            .allMatch(line -> line.length == 9);
+                .allMatch(line -> line.length == 9);
 
         assertTrue(allLinesSameWidth);
         assertThat(gameField.length).isEqualTo(7);
     }
+
+    @Test
+    public void find_movable_blocks() {
+        String file = "./src/test/resources/test-game-field-1.txt";
+        List<String> content = Main.readFileContent(file);
+        char[][] gameField = Main.fillGameField(content);
+
+        List<Main.Block> movableBlocks = Main.findMovableBlocks(gameField);
+        movableBlocks.forEach(System.out::println);
+    }
+
+    @Test
+    public void move_left() {
+        String file = "./src/test/resources/test-game-field-1.txt";
+        List<String> content = Main.readFileContent(file);
+        char[][] gameField = Main.fillGameField(content);
+        Main.printGameField(gameField);
+
+        System.out.println();
+        char[][] movingLeft = Main.move(gameField, "left");
+        Main.printGameField(movingLeft);
+
+    }
+
 
 }
