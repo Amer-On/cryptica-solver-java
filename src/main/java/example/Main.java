@@ -21,7 +21,8 @@ public class Main {
         private int x;
         private int y;
     }
-//    Move blocks
+
+    //    Move blocks
     public static char[][] move(char[][] gameField, String direction) {
         List<Block> movableBlocks = findMovableBlocks(gameField);
         if (direction.equals("left")) {
@@ -105,7 +106,7 @@ public class Main {
     }
 
 
-//    Print field out
+    //    Print field out
     public static void printGameField(char[][] gameField) {
         for (char[] row : gameField) {
             String separator = String.valueOf(" ");
@@ -117,7 +118,7 @@ public class Main {
     }
 
 
-//    Read game field
+    //    Read game field
     public static char[][] readGameField(String file) {
         List<String> lines = readFileContent(file);
         return fillGameField(lines);
