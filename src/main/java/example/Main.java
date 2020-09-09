@@ -15,26 +15,23 @@ public class Main {
         String file = "./src/test/resources/test-game-field-1.txt";
     }
 
-    // TODO: move function
-
     @Value
     public static class Block {
         private char name;
         private int x;
         private int y;
     }
-
-
+//    Move blocks
     public static char[][] move(char[][] gameField, String direction) {
         List<Block> movableBlocks = findMovableBlocks(gameField);
         if (direction.equals("left")) {
             moveLeft(gameField, movableBlocks);
         } else if (direction.equals("right")) {
-//            moveRight();
+            moveRight(gameField, movableBlocks);
         } else if (direction.equals("up")) {
-//            moveUp();
+            moveUp(gameField, movableBlocks);
         } else if (direction.equals("down")) {
-//            moveDown();
+            moveDown(gameField, movableBlocks);
         }
         return gameField;
     }
@@ -44,15 +41,54 @@ public class Main {
         for (Block block : movableBlocks) {
             char newCell = gameField[block.x][block.y - 1];
             if (newCell == '-' || Character.isUpperCase(newCell)) {
-                char previousCell = gameField[block.x][block.y];
                 int newY = block.y - 1;
                 gameField[block.x][newY] = block.name;
-                gameField[block.x][block.y] = previousCell;
+                gameField[block.x][block.y] = newCell;
             }
         }
         return gameField;
     }
 
+    public static char[][] moveRight(char[][] gameField, List<Block> movableBlocks) {
+        movableBlocks.sort(Comparator.comparingInt(Block::getY));
+        Collections.reverse(movableBlocks);
+        for (Block block : movableBlocks) {
+            char newCell = gameField[block.x][block.y + 1];
+            if (newCell == '-' || Character.isUpperCase(newCell)) {
+                int newY = block.y + 1;
+                gameField[block.x][newY] = block.name;
+                gameField[block.x][block.y] = newCell;
+            }
+        }
+        return gameField;
+    }
+
+    public static char[][] moveDown(char[][] gameField, List<Block> movableBlocks) {
+        movableBlocks.sort(Comparator.comparingInt(Block::getX));
+        for (Block block : movableBlocks) {
+            char newCell = gameField[block.x + 1][block.y];
+            if (newCell == '-' || Character.isUpperCase(newCell)) {
+                int newX = block.x + 1;
+                gameField[newX][block.y] = block.name;
+                gameField[block.x][block.y] = newCell;
+            }
+        }
+        return gameField;
+    }
+
+    public static char[][] moveUp(char[][] gameField, List<Block> movableBlocks) {
+        movableBlocks.sort(Comparator.comparingInt(Block::getX));
+        Collections.reverse(movableBlocks);
+        for (Block block : movableBlocks) {
+            char newCell = gameField[block.x - 1][block.y];
+            if (newCell == '-' || Character.isUpperCase(newCell)) {
+                int newX = block.x - 1;
+                gameField[newX][block.y] = block.name;
+                gameField[block.x][block.y] = newCell;
+            }
+        }
+        return gameField;
+    }
 
     public static List<Block> findMovableBlocks(char[][] gameField) {
         List<Block> blocks = new ArrayList<Block>();
@@ -69,6 +105,7 @@ public class Main {
     }
 
 
+//    Print field out
     public static void printGameField(char[][] gameField) {
         for (char[] row : gameField) {
             String separator = String.valueOf(" ");
@@ -79,6 +116,8 @@ public class Main {
         }
     }
 
+
+//    Read game field
     public static char[][] readGameField(String file) {
         List<String> lines = readFileContent(file);
         return fillGameField(lines);

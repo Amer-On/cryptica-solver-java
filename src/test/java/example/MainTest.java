@@ -48,18 +48,52 @@ public class MainTest {
         movableBlocks.forEach(System.out::println);
     }
 
+
     @Test
-    public void move_left() {
+    public void move_left_right() {
         String file = "./src/test/resources/test-game-field-1.txt";
         List<String> content = Main.readFileContent(file);
         char[][] gameField = Main.fillGameField(content);
         Main.printGameField(gameField);
 
         System.out.println();
-        char[][] movingLeft = Main.move(gameField, "left");
-        Main.printGameField(movingLeft);
+        Main.move(gameField, "left");
+        System.out.println("Move Left:");
+        Main.printGameField(gameField);
 
+        System.out.println();
+        Main.move(gameField, "right");
+        System.out.println("Move Right:");
+        Main.printGameField(gameField);
     }
+
+
+    @Test
+    public void move_down_up() {
+        String file = "./src/test/resources/test-game-field-1.txt";
+        List<String> content = Main.readFileContent(file);
+        char[][] gameField = Main.fillGameField(content);
+        Main.printGameField(gameField);
+
+        System.out.println();
+        System.out.println("Moving Left 3 times:");
+        for (int i = 0; i < 3; i++) {
+            Main.move(gameField, "left");
+        }
+            Main.printGameField(gameField);
+
+        System.out.println();
+        System.out.println("Moving Down:");
+        Main.move(gameField, "down");
+        Main.printGameField(gameField);
+
+        System.out.println();
+        System.out.println("Moving Up:");
+        Main.move(gameField, "up");
+        Main.printGameField(gameField);
+    }
+
+
 
 
 }
