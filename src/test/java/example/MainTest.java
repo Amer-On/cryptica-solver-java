@@ -98,4 +98,12 @@ public class MainTest {
         assertThat(result).isEqualTo("#-xA-#");
     }
 
+    @Test
+    public void format_multiline_game_field() {
+        List<String> content = Arrays.asList("#--#","#--#");
+        char[][] gameField = Main.fillGameField(content);
+        String result = Main.formatGameField(gameField);
+        System.out.println(result);
+        assertThat(result).isEqualTo("#--#\n#--#");
+    }
 }

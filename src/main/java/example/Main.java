@@ -157,7 +157,7 @@ public class Main {
     public static String formatGameField(char[][] gameField) {
         return Arrays.stream(gameField)
             .map(String::valueOf)
-            .collect(Collectors.joining());
+            .collect(Collectors.joining("\n"));
     }
 
 }
