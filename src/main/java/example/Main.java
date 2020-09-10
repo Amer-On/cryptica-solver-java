@@ -154,4 +154,10 @@ public class Main {
         return Files.readAllLines(filePath);
     }
 
+    public static String formatGameField(char[][] gameField) {
+        return Arrays.stream(gameField)
+            .map(String::valueOf)
+            .collect(Collectors.joining());
+    }
+
 }
