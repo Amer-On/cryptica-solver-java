@@ -91,9 +91,12 @@ public class MainTest {
     public void move_block_through_target() {
         List<String> content = Arrays.asList("#--Ax#");
         char[][] gameField = Main.fillGameField(content);
+        
         gameField = Main.move(gameField, "left");
-        gameField = Main.move(gameField, "left");
+        String intermediateResult = Main.formatGameField(gameField);
+        assertThat(intermediateResult).isEqualTo("#--x-#");
 
+        gameField = Main.move(gameField, "left");
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("#-xA-#");
     }
