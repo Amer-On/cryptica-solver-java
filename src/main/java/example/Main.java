@@ -1,9 +1,9 @@
 package example;
 
-import java.nio.CharBuffer;
+import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
@@ -17,9 +17,13 @@ public class Main {
 
     @Value
     public static class Block {
+
         private char name;
+
         private int x;
+
         private int y;
+
     }
 
     //    Move blocks
@@ -105,18 +109,16 @@ public class Main {
         return blocks;
     }
 
-
     //    Print field out
     public static void printGameField(char[][] gameField) {
         for (char[] row : gameField) {
             String separator = String.valueOf(" ");
             String joined = CharBuffer.wrap(row).chars()
-                    .mapToObj(intValue -> String.valueOf((char) intValue))
-                    .collect(Collectors.joining(separator));
+                .mapToObj(intValue -> String.valueOf((char) intValue))
+                .collect(Collectors.joining(separator));
             System.out.println(joined);
         }
     }
-
 
     //    Read game field
     public static char[][] readGameField(String file) {

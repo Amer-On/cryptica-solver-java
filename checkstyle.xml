@@ -106,7 +106,6 @@
         <!--<module name="WhitespaceAfter"/>-->
         <!--<module name="WhitespaceAround"/>-->
 
-
         <!-- See https://checkstyle.org/config_modifiers.html -->
         <module name="ModifierOrder"/>
 

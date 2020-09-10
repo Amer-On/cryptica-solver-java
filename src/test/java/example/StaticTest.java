@@ -1,21 +1,22 @@
 package example;
 
-import org.junit.Test;
+import org.junit.*;
 
 public class StaticTest {
 
-    public static class StaticClass{
+    public static class StaticClass {
+
         public static int a = 0;
+
         public int b = 0;
-
-
 
         @Override
         public String toString() {
             return "StaticClass{" +
-                    "b=" + b + ", a=" + a +
-                    '}';
+                   "b=" + b + ", a=" + a +
+                   '}';
         }
+
     }
 
     @Test

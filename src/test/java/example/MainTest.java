@@ -2,12 +2,9 @@ package example;
 
 import java.util.*;
 
-import lombok.extern.slf4j.*;
-
 import org.junit.*;
 
-import static org.junit.Assert.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 public class MainTest {
 
@@ -22,7 +19,6 @@ public class MainTest {
     public void read_file_not_present() {
         String file = "./src/test/resources/test-game-field-666.txt";
         List<String> content = Main.readFileContent(file);
-        fail("Must throw exception");
     }
 
     @Test
@@ -32,9 +28,9 @@ public class MainTest {
         char[][] gameField = Main.fillGameField(content);
 
         boolean allLinesSameWidth = Arrays.stream(gameField)
-                .allMatch(line -> line.length == 9);
+            .allMatch(line -> line.length == 9);
 
-        assertTrue(allLinesSameWidth);
+        assertThat(allLinesSameWidth).isTrue();
         assertThat(gameField.length).isEqualTo(7);
     }
 
@@ -47,7 +43,6 @@ public class MainTest {
         List<Main.Block> movableBlocks = Main.findMovableBlocks(gameField);
         movableBlocks.forEach(System.out::println);
     }
-
 
     @Test
     public void move_left_right() {
@@ -67,7 +62,6 @@ public class MainTest {
         Main.printGameField(gameField);
     }
 
-
     @Test
     public void move_down_up() {
         String file = "./src/test/resources/test-game-field-1.txt";
@@ -80,7 +74,7 @@ public class MainTest {
         for (int i = 0; i < 3; i++) {
             Main.move(gameField, "left");
         }
-            Main.printGameField(gameField);
+        Main.printGameField(gameField);
 
         System.out.println();
         System.out.println("Moving Down:");
@@ -92,8 +86,5 @@ public class MainTest {
         Main.move(gameField, "up");
         Main.printGameField(gameField);
     }
-
-
-
 
 }
