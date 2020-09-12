@@ -91,22 +91,46 @@ public class MainTest {
     public void move_block_through_target() {
         List<String> content = Arrays.asList("#--Ax#");
         char[][] gameField = Main.fillGameField(content);
-        
-        gameField = Main.move(gameField, "left");
-        String intermediateResult = Main.formatGameField(gameField);
-        assertThat(intermediateResult).isEqualTo("#--x-#");
+        Main.printGameField(gameField);
+        List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
+        Main.move(gameField, "left");
+        Main.move(gameField, "left");
 
-        gameField = Main.move(gameField, "left");
+        Main.checkTargetBlocksPos(gameField, targetBlocks);
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("#-xA-#");
     }
 
     @Test
     public void format_multiline_game_field() {
-        List<String> content = Arrays.asList("#--#","#--#");
+        List<String> content = Arrays.asList("#--#", "#--#");
         char[][] gameField = Main.fillGameField(content);
         String result = Main.formatGameField(gameField);
         System.out.println(result);
+        System.out.println(gameField);
         assertThat(result).isEqualTo("#--#\n#--#");
     }
+
+    @Test
+    public void find_target_blocks() {
+        List<String> content = Arrays.asList("#--Ax#");
+        char[][] gameField = Main.fillGameField(content);
+
+        List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
+
+        Main.printBlocks(targetBlocks);
+    }
+
+    @Test
+    public void check_target_block_pos() {
+        String file = "./src/test/resources/test-game-field-1.txt";
+        List<String> content = Main.readFileContent(file);
+        char[][] gameField = Main.fillGameField(content);
+        Main.printGameField(gameField);
+        System.out.println();
+
+        // code
+        List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
+    }
+
 }

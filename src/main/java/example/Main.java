@@ -20,15 +20,16 @@ public class Main {
 
         private char name;
 
-        private int x;
-
         private int y;
+
+        private int x;
 
     }
 
     //    Move blocks
     public static char[][] move(char[][] gameField, String direction) {
         List<Block> movableBlocks = findMovableBlocks(gameField);
+        List<Block> targetBlocks = findTargetBlocks(gameField);
         if (direction.equals("left")) {
             moveLeft(gameField, movableBlocks);
         } else if (direction.equals("right")) {
@@ -42,59 +43,84 @@ public class Main {
     }
 
     public static char[][] moveLeft(char[][] gameField, List<Block> movableBlocks) {
-        movableBlocks.sort(Comparator.comparingInt(Block::getY));
+        movableBlocks.sort(Comparator.comparingInt(Block::getX));
         for (Block block : movableBlocks) {
-            char newCell = gameField[block.x][block.y - 1];
-            if (newCell == '-' || Character.isUpperCase(newCell)) {
-                int newY = block.y - 1;
-                gameField[block.x][newY] = block.name;
-                gameField[block.x][block.y] = newCell;
+            char newCell = gameField[block.y][block.x - 1];
+            if (newCell == '-') {
+                int newY = block.x - 1;
+                gameField[block.y][newY] = block.name;
+                gameField[block.y][block.x] = newCell;
+            } else if (Character.isUpperCase(newCell)) {
+                int newY = block.x - 1;
+                gameField[block.y][newY] = block.name;
+                gameField[block.y][block.x] = '-';
             }
         }
         return gameField;
     }
 
     public static char[][] moveRight(char[][] gameField, List<Block> movableBlocks) {
-        movableBlocks.sort(Comparator.comparingInt(Block::getY));
+        movableBlocks.sort(Comparator.comparingInt(Block::getX));
         Collections.reverse(movableBlocks);
         for (Block block : movableBlocks) {
-            char newCell = gameField[block.x][block.y + 1];
+            char newCell = gameField[block.y][block.x + 1];
             if (newCell == '-' || Character.isUpperCase(newCell)) {
-                int newY = block.y + 1;
-                gameField[block.x][newY] = block.name;
-                gameField[block.x][block.y] = newCell;
+                int newY = block.x + 1;
+                gameField[block.y][newY] = block.name;
+                gameField[block.y][block.x] = newCell;
+            } else if (Character.isUpperCase(newCell)) {
+                int newY = block.x - 1;
+                gameField[block.y][newY] = block.name;
+                gameField[block.y][block.x] = '-';
             }
         }
         return gameField;
     }
 
     public static char[][] moveDown(char[][] gameField, List<Block> movableBlocks) {
-        movableBlocks.sort(Comparator.comparingInt(Block::getX));
+        movableBlocks.sort(Comparator.comparingInt(Block::getY));
         for (Block block : movableBlocks) {
-            char newCell = gameField[block.x + 1][block.y];
+            char newCell = gameField[block.y + 1][block.x];
             if (newCell == '-' || Character.isUpperCase(newCell)) {
-                int newX = block.x + 1;
-                gameField[newX][block.y] = block.name;
-                gameField[block.x][block.y] = newCell;
+                int newX = block.y + 1;
+                gameField[newX][block.x] = block.name;
+                gameField[block.y][block.x] = newCell;
+            } else if (Character.isUpperCase(newCell)) {
+                int newY = block.x - 1;
+                gameField[block.y][newY] = block.name;
+                gameField[block.y][block.x] = '-';
             }
         }
         return gameField;
     }
 
     public static char[][] moveUp(char[][] gameField, List<Block> movableBlocks) {
-        movableBlocks.sort(Comparator.comparingInt(Block::getX));
+        movableBlocks.sort(Comparator.comparingInt(Block::getY));
         Collections.reverse(movableBlocks);
         for (Block block : movableBlocks) {
-            char newCell = gameField[block.x - 1][block.y];
+            char newCell = gameField[block.y - 1][block.x];
             if (newCell == '-' || Character.isUpperCase(newCell)) {
-                int newX = block.x - 1;
-                gameField[newX][block.y] = block.name;
-                gameField[block.x][block.y] = newCell;
+                int newX = block.y - 1;
+                gameField[newX][block.x] = block.name;
+                gameField[block.y][block.x] = newCell;
+            } else if (Character.isUpperCase(newCell)) {
+                int newY = block.x - 1;
+                gameField[block.y][newY] = block.name;
+                gameField[block.y][block.x] = '-';
             }
         }
         return gameField;
     }
 
+    public static void printBlocks(List<Block> blocks) {
+        for (Block block : blocks) {
+            System.out.print("Значение блока: " + block.name);
+            System.out.print(" Позиция по х: " + block.y);
+            System.out.println(" Позиция по у: " + block.x);
+        }
+    }
+
+    // Finding blocks
     public static List<Block> findMovableBlocks(char[][] gameField) {
         List<Block> blocks = new ArrayList<Block>();
         for (int i = 0; i < gameField.length; i++) {
@@ -107,6 +133,29 @@ public class Main {
             }
         }
         return blocks;
+    }
+
+    public static List<Block> findTargetBlocks(char[][] gameField) {
+        List<Block> targetBlocks = new ArrayList<Block>();
+        for (int i = 0; i < gameField.length; i++) {
+            for (int j = 0; j < gameField[i].length; j++) {
+                char cell = gameField[i][j];
+                if (Character.isUpperCase(cell)) {
+                    Block targetBlock = new Block(cell, i, j);
+                    targetBlocks.add(targetBlock);
+                }
+            }
+        }
+        return targetBlocks;
+    }
+
+    public static char[][] checkTargetBlocksPos(char[][] gameField, List<Block> targetBlocks) {
+        for (Block block : targetBlocks) {
+            if (gameField[block.y][block.x] == '-') {
+                gameField[block.y][block.x] = block.name;
+            }
+        }
+        return gameField;
     }
 
     //    Print field out
