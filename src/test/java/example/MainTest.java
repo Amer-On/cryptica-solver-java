@@ -38,8 +38,7 @@ public class MainTest {
         assertThat(gameField.length).isEqualTo(7);
     }
 
-<<<<<<< Updated upstream
-=======
+
     @Test
     public void find_movable_blocks() {
         String file = "./src/test/resources/test-game-field-1.txt";
@@ -98,7 +97,7 @@ public class MainTest {
         List<String> content = Arrays.asList("#--Ax#");
         char[][] gameField = Main.fillGameField(content);
         Main.printGameField(gameField);
-        List<Main.Block> targetBlocks= Main.findTargetBlocks(gameField);
+        List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
         Main.move(gameField, "left");
         Main.move(gameField, "left");
 
@@ -141,7 +140,4 @@ public class MainTest {
 
     }
 
-
-
->>>>>>> Stashed changes
 }

@@ -1,7 +1,9 @@
 package example;
 
+import java.nio.CharBuffer;
 import java.nio.file.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import lombok.*;
 import lombok.extern.slf4j.*;
@@ -10,8 +12,6 @@ import lombok.extern.slf4j.*;
 public class Main {
 
     public static void main(String[] args) {
-<<<<<<< Updated upstream
-=======
         String file = "./src/test/resources/test-game-field-1.txt";
     }
 
@@ -21,13 +21,11 @@ public class Main {
         private char name;
 
         private int y;
->>>>>>> Stashed changes
+
 
         private int x;
     }
 
-<<<<<<< Updated upstream
-=======
 
     //    Move blocks
     public static char[][] move(char[][] gameField, String direction) {
@@ -174,7 +172,7 @@ public class Main {
     }
 
     //    Read game field
->>>>>>> Stashed changes
+
     public static char[][] readGameField(String file) {
         List<String> lines = readFileContent(file);
         return fillGameField(lines);
@@ -208,13 +206,10 @@ public class Main {
         return Files.readAllLines(filePath);
     }
 
-<<<<<<< Updated upstream
-=======
     public static String formatGameField(char[][] gameField) {
         return Arrays.stream(gameField)
                 .map(String::valueOf)
                 .collect(Collectors.joining("\n"));
     }
 
->>>>>>> Stashed changes
 }
