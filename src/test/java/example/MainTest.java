@@ -41,7 +41,7 @@ public class MainTest {
         char[][] gameField = Main.fillGameField(content);
 
         List<Main.Block> movableBlocks = Main.findMovableBlocks(gameField);
-        movableBlocks.forEach(System.out::println);
+        Main.printBlocks(movableBlocks);
     }
 
     @Test

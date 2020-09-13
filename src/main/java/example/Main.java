@@ -1,6 +1,5 @@
 package example;
 
-import java.lang.reflect.Array;
 import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
@@ -30,7 +29,8 @@ public class Main {
     //    Move blocks
     public static char[][] move(char[][] gameField,
                                 String direction,
-                                List<Block> targetBlocks) {
+                                List<Block> targetBlocks
+    ) {
         char[][] movedGameField = copyCharArray(gameField);
         List<Block> movableBlocks = findMovableBlocks(movedGameField);
         if (direction.equals("left")) {
@@ -42,8 +42,9 @@ public class Main {
         } else if (direction.equals("down")) {
             movedGameField = moveDown(gameField, movableBlocks);
         }
-        if (targetBlocks != null)
+        if (targetBlocks != null) {
             movedGameField = checkTargetBlocksPos(movedGameField, targetBlocks);
+        }
 
         return movedGameField;
     }
@@ -158,9 +159,9 @@ public class Main {
     public static char[][] checkTargetBlocksPos(char[][] gameField, List<Block> targetBlocks) {
         char[][] checkedGameField = copyCharArray(gameField);
         for (Block block : targetBlocks) {
-            if (gameField[block.x][block.y] == '-')
+            if (gameField[block.x][block.y] == '-') {
                 checkedGameField[block.x][block.y] = block.name;
-
+            }
         }
         return checkedGameField;
     }
@@ -176,14 +177,13 @@ public class Main {
         return charArrayCopy;
     }
 
-
     //    Print field out
     public static void printGameField(char[][] gameField) {
         for (char[] row : gameField) {
             String separator = String.valueOf(" ");
             String joined = CharBuffer.wrap(row).chars()
-                    .mapToObj(intValue -> String.valueOf((char) intValue))
-                    .collect(Collectors.joining(separator));
+                .mapToObj(intValue -> String.valueOf((char) intValue))
+                .collect(Collectors.joining(separator));
             System.out.println(joined);
         }
     }
@@ -224,8 +224,8 @@ public class Main {
 
     public static String formatGameField(char[][] gameField) {
         return Arrays.stream(gameField)
-                .map(String::valueOf)
-                .collect(Collectors.joining("\n"));
+            .map(String::valueOf)
+            .collect(Collectors.joining("\n"));
     }
 
 }
