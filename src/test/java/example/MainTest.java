@@ -45,60 +45,78 @@ public class MainTest {
     }
 
     @Test
-    public void move_left_right() {
-        String file = "./src/test/resources/test-game-field-1.txt";
-        List<String> content = Main.readFileContent(file);
+    public void move_left() {
+        List<String> content = Arrays.asList("#---xa#");
         char[][] gameField = Main.fillGameField(content);
-        Main.printGameField(gameField);
+        gameField = Main.move(gameField, "left", null);
+        gameField = Main.move(gameField, "left", null);
 
-        System.out.println();
-        Main.move(gameField, "left");
-        System.out.println("Move Left:");
-        Main.printGameField(gameField);
-
-        System.out.println();
-        Main.move(gameField, "right");
-        System.out.println("Move Right:");
-        Main.printGameField(gameField);
+        String result = Main.formatGameField(gameField);
+        assertThat(result).isEqualTo("#-xa--#");
     }
 
     @Test
-    public void move_down_up() {
-        String file = "./src/test/resources/test-game-field-1.txt";
-        List<String> content = Main.readFileContent(file);
+    public void move_right() {
+        List<String> content = Arrays.asList("#ax---#");
         char[][] gameField = Main.fillGameField(content);
-        Main.printGameField(gameField);
+        gameField = Main.move(gameField, "right", null);
+        gameField = Main.move(gameField, "right", null);
 
-        System.out.println();
-        System.out.println("Moving Left 3 times:");
-        for (int i = 0; i < 3; i++) {
-            Main.move(gameField, "left");
-        }
-        Main.printGameField(gameField);
-
-        System.out.println();
-        System.out.println("Moving Down:");
-        Main.move(gameField, "down");
-        Main.printGameField(gameField);
-
-        System.out.println();
-        System.out.println("Moving Up:");
-        Main.move(gameField, "up");
-        Main.printGameField(gameField);
+        String result = Main.formatGameField(gameField);
+        assertThat(result).isEqualTo("#--ax-#");
     }
 
     @Test
-    public void move_block_through_target() {
+    public void move_down() {
+        List<String> content = Arrays.asList("##xa##", "##--##");
+        char[][] gameField = Main.fillGameField(content);
+        gameField = Main.move(gameField, "down", null);
+
+        String result = Main.formatGameField(gameField);
+        assertThat(result).isEqualTo("##--##\n##xa##");
+    }
+
+    @Test
+    public void move_up() {
+        List<String> content = Arrays.asList("##--##", "##xa##");
+        char[][] gameField = Main.fillGameField(content);
+        gameField = Main.move(gameField, "up", null);
+
+        String result = Main.formatGameField(gameField);
+        assertThat(result).isEqualTo("##xa##\n##--##");
+    }
+
+    @Test
+    public void move_block_through_target_left() {
         List<String> content = Arrays.asList("#--Ax#");
         char[][] gameField = Main.fillGameField(content);
-        Main.printGameField(gameField);
         List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
-        Main.move(gameField, "left");
-        Main.move(gameField, "left");
+        gameField = Main.move(gameField, "left", targetBlocks);
+        gameField = Main.move(gameField, "left", targetBlocks);
 
-        Main.checkTargetBlocksPos(gameField, targetBlocks);
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("#-xA-#");
+    }
+
+    @Test
+    public void move_block_through_target_right() {
+        List<String> content = Arrays.asList("#xA--#");
+        char[][] gameField = Main.fillGameField(content);
+        List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
+        gameField = Main.move(gameField, "right", targetBlocks);
+        gameField = Main.move(gameField, "right", targetBlocks);
+
+        String result = Main.formatGameField(gameField);
+        assertThat(result).isEqualTo("#-Ax-#");
+    }
+
+    @Test
+    public void copy_char_array() {
+        List<String> content = Arrays.asList("#--A--#", "#--x--#");
+        char[][] gameField = Main.fillGameField(content);
+        char[][] newGameField = Main.copyCharArray(gameField);
+        newGameField[0][3] = 'a';
+        assertThat(newGameField).isNotEqualTo(gameField);
     }
 
     @Test
@@ -123,14 +141,14 @@ public class MainTest {
 
     @Test
     public void check_target_block_pos() {
-        String file = "./src/test/resources/test-game-field-1.txt";
-        List<String> content = Main.readFileContent(file);
+        List<String> content = Arrays.asList("#--A-#", "#B---#");
         char[][] gameField = Main.fillGameField(content);
-        Main.printGameField(gameField);
-        System.out.println();
-
-        // code
         List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
+
+        gameField = Main.fillGameField(Arrays.asList("#----#", "#x---#"));
+        gameField = Main.checkTargetBlocksPos(gameField, targetBlocks);
+        String result = Main.formatGameField(gameField);
+        assertThat(result).isEqualTo("#--A-#\n#x---#");
     }
 
 }

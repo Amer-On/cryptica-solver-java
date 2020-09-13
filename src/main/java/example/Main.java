@@ -1,5 +1,6 @@
 package example;
 
+import java.lang.reflect.Array;
 import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
@@ -20,103 +21,108 @@ public class Main {
 
         private char name;
 
-        private int y;
-
         private int x;
+
+        private int y;
 
     }
 
     //    Move blocks
-    public static char[][] move(char[][] gameField, String direction) {
-        List<Block> movableBlocks = findMovableBlocks(gameField);
-        List<Block> targetBlocks = findTargetBlocks(gameField);
+    public static char[][] move(char[][] gameField,
+                                String direction,
+                                List<Block> targetBlocks) {
+        char[][] movedGameField = copyCharArray(gameField);
+        List<Block> movableBlocks = findMovableBlocks(movedGameField);
         if (direction.equals("left")) {
-            moveLeft(gameField, movableBlocks);
+            movedGameField = moveLeft(movedGameField, movableBlocks);
         } else if (direction.equals("right")) {
-            moveRight(gameField, movableBlocks);
+            movedGameField = moveRight(movedGameField, movableBlocks);
         } else if (direction.equals("up")) {
-            moveUp(gameField, movableBlocks);
+            movedGameField = moveUp(gameField, movableBlocks);
         } else if (direction.equals("down")) {
-            moveDown(gameField, movableBlocks);
+            movedGameField = moveDown(gameField, movableBlocks);
         }
-        return gameField;
+        if (targetBlocks != null)
+            movedGameField = checkTargetBlocksPos(movedGameField, targetBlocks);
+
+        return movedGameField;
     }
 
     public static char[][] moveLeft(char[][] gameField, List<Block> movableBlocks) {
-        movableBlocks.sort(Comparator.comparingInt(Block::getX));
+        movableBlocks.sort(Comparator.comparingInt(Block::getY));
+        char[][] movedLeftGameField = copyCharArray(gameField);
         for (Block block : movableBlocks) {
-            char newCell = gameField[block.y][block.x - 1];
+            char newCell = movedLeftGameField[block.x][block.y - 1];
+            int newY = block.y - 1;
             if (newCell == '-') {
-                int newY = block.x - 1;
-                gameField[block.y][newY] = block.name;
-                gameField[block.y][block.x] = newCell;
+                movedLeftGameField[block.x][newY] = block.name;
+                movedLeftGameField[block.x][block.y] = newCell;
             } else if (Character.isUpperCase(newCell)) {
-                int newY = block.x - 1;
-                gameField[block.y][newY] = block.name;
-                gameField[block.y][block.x] = '-';
+                movedLeftGameField[block.x][newY] = block.name;
+                movedLeftGameField[block.x][block.y] = '-';
             }
         }
-        return gameField;
+        return movedLeftGameField;
     }
 
     public static char[][] moveRight(char[][] gameField, List<Block> movableBlocks) {
-        movableBlocks.sort(Comparator.comparingInt(Block::getX));
+        movableBlocks.sort(Comparator.comparingInt(Block::getY));
         Collections.reverse(movableBlocks);
+        char[][] movedRightGameField = copyCharArray(gameField);
         for (Block block : movableBlocks) {
-            char newCell = gameField[block.y][block.x + 1];
-            if (newCell == '-' || Character.isUpperCase(newCell)) {
-                int newY = block.x + 1;
-                gameField[block.y][newY] = block.name;
-                gameField[block.y][block.x] = newCell;
+            char newCell = movedRightGameField[block.x][block.y + 1];
+            int newY = block.y + 1;
+            if (newCell == '-') {
+                movedRightGameField[block.x][newY] = block.name;
+                movedRightGameField[block.x][block.y] = newCell;
             } else if (Character.isUpperCase(newCell)) {
-                int newY = block.x - 1;
-                gameField[block.y][newY] = block.name;
-                gameField[block.y][block.x] = '-';
+                movedRightGameField[block.x][newY] = block.name;
+                movedRightGameField[block.x][block.y] = '-';
             }
         }
-        return gameField;
+        return movedRightGameField;
     }
 
     public static char[][] moveDown(char[][] gameField, List<Block> movableBlocks) {
-        movableBlocks.sort(Comparator.comparingInt(Block::getY));
+        movableBlocks.sort(Comparator.comparingInt(Block::getX));
+        char[][] movedDownGameField = copyCharArray(gameField);
         for (Block block : movableBlocks) {
-            char newCell = gameField[block.y + 1][block.x];
-            if (newCell == '-' || Character.isUpperCase(newCell)) {
-                int newX = block.y + 1;
-                gameField[newX][block.x] = block.name;
-                gameField[block.y][block.x] = newCell;
+            char newCell = movedDownGameField[block.x + 1][block.y];
+            int newX = block.x + 1;
+            if (newCell == '-') {
+                movedDownGameField[newX][block.y] = block.name;
+                movedDownGameField[block.x][block.y] = newCell;
             } else if (Character.isUpperCase(newCell)) {
-                int newY = block.x - 1;
-                gameField[block.y][newY] = block.name;
-                gameField[block.y][block.x] = '-';
+                movedDownGameField[newX][block.y] = block.name;
+                movedDownGameField[block.x][block.y] = '-';
             }
         }
-        return gameField;
+        return movedDownGameField;
     }
 
     public static char[][] moveUp(char[][] gameField, List<Block> movableBlocks) {
-        movableBlocks.sort(Comparator.comparingInt(Block::getY));
+        movableBlocks.sort(Comparator.comparingInt(Block::getX));
         Collections.reverse(movableBlocks);
+        char[][] movedUpGameField = copyCharArray(gameField);
         for (Block block : movableBlocks) {
-            char newCell = gameField[block.y - 1][block.x];
+            char newCell = movedUpGameField[block.x - 1][block.y];
+            int newX = block.x - 1;
             if (newCell == '-' || Character.isUpperCase(newCell)) {
-                int newX = block.y - 1;
-                gameField[newX][block.x] = block.name;
-                gameField[block.y][block.x] = newCell;
+                movedUpGameField[newX][block.y] = block.name;
+                movedUpGameField[block.x][block.y] = newCell;
             } else if (Character.isUpperCase(newCell)) {
-                int newY = block.x - 1;
-                gameField[block.y][newY] = block.name;
-                gameField[block.y][block.x] = '-';
+                movedUpGameField[newX][block.y] = block.name;
+                movedUpGameField[block.x][block.y] = '-';
             }
         }
-        return gameField;
+        return movedUpGameField;
     }
 
     public static void printBlocks(List<Block> blocks) {
         for (Block block : blocks) {
             System.out.print("Значение блока: " + block.name);
-            System.out.print(" Позиция по х: " + block.y);
-            System.out.println(" Позиция по у: " + block.x);
+            System.out.print(" Позиция по х: " + block.x);
+            System.out.println(" Позиция по у: " + block.y);
         }
     }
 
@@ -150,21 +156,34 @@ public class Main {
     }
 
     public static char[][] checkTargetBlocksPos(char[][] gameField, List<Block> targetBlocks) {
+        char[][] checkedGameField = copyCharArray(gameField);
         for (Block block : targetBlocks) {
-            if (gameField[block.y][block.x] == '-') {
-                gameField[block.y][block.x] = block.name;
+            if (gameField[block.x][block.y] == '-')
+                checkedGameField[block.x][block.y] = block.name;
+
+        }
+        return checkedGameField;
+    }
+
+    public static char[][] copyCharArray(char[][] charArray) {
+        char[][] charArrayCopy = new char[charArray.length][charArray[0].length];
+        for (int i = 0; i < charArray.length; i++) {
+            for (int j = 0; j < charArray[i].length; j++) {
+                charArrayCopy[i][j] = charArray[i][j];
             }
         }
-        return gameField;
+
+        return charArrayCopy;
     }
+
 
     //    Print field out
     public static void printGameField(char[][] gameField) {
         for (char[] row : gameField) {
             String separator = String.valueOf(" ");
             String joined = CharBuffer.wrap(row).chars()
-                .mapToObj(intValue -> String.valueOf((char) intValue))
-                .collect(Collectors.joining(separator));
+                    .mapToObj(intValue -> String.valueOf((char) intValue))
+                    .collect(Collectors.joining(separator));
             System.out.println(joined);
         }
     }
@@ -205,8 +224,8 @@ public class Main {
 
     public static String formatGameField(char[][] gameField) {
         return Arrays.stream(gameField)
-            .map(String::valueOf)
-            .collect(Collectors.joining("\n"));
+                .map(String::valueOf)
+                .collect(Collectors.joining("\n"));
     }
 
 }
