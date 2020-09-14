@@ -140,7 +140,7 @@ public class MainTest {
     }
 
     @Test
-    public void check_target_block_pos() {
+    public void check_target_blocks_pos() {
         List<String> content = Arrays.asList("#--A-#", "#B---#");
         char[][] gameField = Main.fillGameField(content);
         List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
