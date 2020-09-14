@@ -26,8 +26,19 @@ public class Main {
 
     }
 
+    public static class enumValues {
+
+        enum direction {
+            left,
+            right,
+            up,
+            down
+        }
+
+    }
+
     //    Move blocks
-    public static char[][] move(char[][] gameField,
+    public static char[][] moveStringDirection(char[][] gameField,
                                 String direction,
                                 List<Block> targetBlocks
     ) {
@@ -48,6 +59,32 @@ public class Main {
 
         return movedGameField;
     }
+
+
+    public static char[][] move(char[][] gameField,
+                                enumValues.direction direction,
+                                List<Block> targetBlocks
+    ) {
+        char[][] movedGameField = copyCharArray(gameField);
+        List<Block> movableBlocks = findMovableBlocks(movedGameField);
+        if (direction == enumValues.direction.left) {
+            movedGameField = moveLeft(movedGameField, movableBlocks);
+        } else if (direction == enumValues.direction.right) {
+            movedGameField = moveRight(movedGameField, movableBlocks);
+        } else if (direction == enumValues.direction.up) {
+            movedGameField = moveUp(gameField, movableBlocks);
+        } else if (direction == enumValues.direction.down) {
+            movedGameField = moveDown(gameField, movableBlocks);
+        }
+        if (targetBlocks != null) {
+            movedGameField = checkTargetBlocksPos(movedGameField, targetBlocks);
+        }
+
+        return movedGameField;
+    }
+
+
+
 
     public static char[][] moveLeft(char[][] gameField, List<Block> movableBlocks) {
         movableBlocks.sort(Comparator.comparingInt(Block::getY));
