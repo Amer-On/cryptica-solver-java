@@ -22,6 +22,19 @@ public class MainTest {
     }
 
     @Test
+    public void read_game_field() {
+        String file = "./src/test/resources/test-game-field-1.txt";
+        char[][] gameField = Main.readGameField(file);
+    }
+
+    @Test
+    public void print_game_field() {
+        String file = "./src/test/resources/test-game-field-1.txt";
+        char[][] gameField = Main.readGameField(file);
+        Main.printGameField(gameField);
+    }
+
+    @Test
     public void fill_game_field() {
         String file = "./src/test/resources/test-game-field-1.txt";
         List<String> content = Main.readFileContent(file);
@@ -44,37 +57,34 @@ public class MainTest {
         Main.printBlocks(movableBlocks);
     }
 
-
     @Test
     public void move_left() {
         List<String> content = Arrays.asList("#---xa#");
         char[][] gameField = Main.fillGameField(content);
-        gameField = Main.move(gameField, Main.enumValues.direction.left, null);
-        gameField = Main.move(gameField, Main.enumValues.direction.left, null);
+        gameField = Main.move(gameField, Main.Direction.left, null);
+        gameField = Main.move(gameField, Main.Direction.left, null);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("#-xa--#");
     }
 
-
     @Test
     public void move_left_advanced() {
         List<String> content = Arrays.asList("#-xxxa#");
         char[][] gameField = Main.fillGameField(content);
-        gameField = Main.move(gameField, Main.enumValues.direction.left, null);
-        gameField = Main.move(gameField, Main.enumValues.direction.left, null);
+        gameField = Main.move(gameField, Main.Direction.left, null);
+        gameField = Main.move(gameField, Main.Direction.left, null);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("#xxxa-#");
     }
 
-
     @Test
     public void move_right() {
         List<String> content = Arrays.asList("#ax---#");
         char[][] gameField = Main.fillGameField(content);
-        gameField = Main.move(gameField, Main.enumValues.direction.right, null);
-        gameField = Main.move(gameField, Main.enumValues.direction.right, null);
+        gameField = Main.move(gameField, Main.Direction.right, null);
+        gameField = Main.move(gameField, Main.Direction.right, null);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("#--ax-#");
@@ -84,8 +94,8 @@ public class MainTest {
     public void move_right_advanced() {
         List<String> content = Arrays.asList("#axxx-#");
         char[][] gameField = Main.fillGameField(content);
-        gameField = Main.move(gameField, Main.enumValues.direction.right, null);
-        gameField = Main.move(gameField, Main.enumValues.direction.right, null);
+        gameField = Main.move(gameField, Main.Direction.right, null);
+        gameField = Main.move(gameField, Main.Direction.right, null);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("#-axxx#");
@@ -95,7 +105,7 @@ public class MainTest {
     public void move_down() {
         List<String> content = Arrays.asList("##xa##", "##--##");
         char[][] gameField = Main.fillGameField(content);
-        gameField = Main.move(gameField, Main.enumValues.direction.down, null);
+        gameField = Main.move(gameField, Main.Direction.down, null);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("##--##\n##xa##");
@@ -105,8 +115,8 @@ public class MainTest {
     public void move_down_advanced() {
         List<String> content = Arrays.asList("##xa##", "##x-##", "##--##", "######");
         char[][] gameField = Main.fillGameField(content);
-        gameField = Main.move(gameField, Main.enumValues.direction.down, null);
-        gameField = Main.move(gameField, Main.enumValues.direction.down, null);
+        gameField = Main.move(gameField, Main.Direction.down, null);
+        gameField = Main.move(gameField, Main.Direction.down, null);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("##--##\n##x-##\n##xa##\n######");
@@ -116,7 +126,7 @@ public class MainTest {
     public void move_up() {
         List<String> content = Arrays.asList("##--##", "##xa##");
         char[][] gameField = Main.fillGameField(content);
-        gameField = Main.move(gameField, Main.enumValues.direction.up, null);
+        gameField = Main.move(gameField, Main.Direction.up, null);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("##xa##\n##--##");
@@ -126,8 +136,8 @@ public class MainTest {
     public void move_up_advanced() {
         List<String> content = Arrays.asList("######", "##--##", "##x-##", "##xa##");
         char[][] gameField = Main.fillGameField(content);
-        gameField = Main.move(gameField, Main.enumValues.direction.up, null);
-        gameField = Main.move(gameField, Main.enumValues.direction.up, null);
+        gameField = Main.move(gameField, Main.Direction.up, null);
+        gameField = Main.move(gameField, Main.Direction.up, null);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("######\n##xa##\n##x-##\n##--##");
@@ -138,8 +148,8 @@ public class MainTest {
         List<String> content = Arrays.asList("#--Ax#");
         char[][] gameField = Main.fillGameField(content);
         List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
-        gameField = Main.move(gameField, Main.enumValues.direction.left, targetBlocks);
-        gameField = Main.move(gameField, Main.enumValues.direction.left, targetBlocks);
+        gameField = Main.move(gameField, Main.Direction.left, targetBlocks);
+        gameField = Main.move(gameField, Main.Direction.left, targetBlocks);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("#-xA-#");
@@ -150,8 +160,8 @@ public class MainTest {
         List<String> content = Arrays.asList("#xA--#");
         char[][] gameField = Main.fillGameField(content);
         List<Main.Block> targetBlocks = Main.findTargetBlocks(gameField);
-        gameField = Main.move(gameField, Main.enumValues.direction.right, targetBlocks);
-        gameField = Main.move(gameField, Main.enumValues.direction.right, targetBlocks);
+        gameField = Main.move(gameField, Main.Direction.right, targetBlocks);
+        gameField = Main.move(gameField, Main.Direction.right, targetBlocks);
 
         String result = Main.formatGameField(gameField);
         assertThat(result).isEqualTo("#-Ax-#");
